@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class Algoritmos {
-    //Las divisiones entre 1000000 en los returns es para que el resultado en milisegundos y no en nanosegundos
-
     //Metodo para generar puntos aleatorios
     public static ArrayList<Punto> GenerarPuntosAleatorios(int n) {
         ArrayList<Punto> puntos = new ArrayList<Punto>(n);
