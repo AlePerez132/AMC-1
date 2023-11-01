@@ -12,7 +12,7 @@ import java.util.Random;
  * @author alepd
  */
 public class Voraz {
-    
+
     public static ArrayList<Punto> unidireccionalTSP(ArrayList<Punto> ciudades) {
         int n = ciudades.size();
         boolean[] visitadas = new boolean[n];
@@ -50,48 +50,38 @@ public class Voraz {
         return ruta;
     }
 
-    /*
-    //Metodo que uso para pasar de una lista de puntos a una lista de Nodos con sus Aristas
-    public static ArrayList<Nodo> leerPuntos(ArrayList<Punto> puntos) {
-        Nodo nodo;
-        Arista aris;
-        Segmento segm;
-        ArrayList<Nodo> listaNodos = new ArrayList<>();
-        ArrayList<Arista> listaAristas = null;
-        for (int i = 0; i < puntos.size(); i++) {
-            listaAristas = new ArrayList<>();
-            for (int j = 0; j < puntos.size(); j++) {
-                if (i != j) {
-                    segm = new Segmento(puntos.get(i), puntos.get(j));
-                    aris = new Arista(puntos.get(j), segm.distancia());
-                    listaAristas.add(aris);
-                }
-            }
-            nodo = new Nodo(puntos.get(i), listaAristas);
-            listaNodos.add(nodo);
-        }
-        return listaNodos;
-    }
-    
-    public static ArrayList<Nodo> Unidireccional(ArrayList<Nodo> listaNodos){
+    public static ArrayList<Punto> bidireccionalTSP(ArrayList<Punto> puntos) {
+        int n = puntos.size();
+        ArrayList<Punto> ruta = new ArrayList<>();
+        boolean[] visitados = new boolean[n];
+        Random rand = new Random(System.currentTimeMillis());
         
-        boolean[] visitados = new boolean[listaNodos.size()];
-        for(int i = 0; i < visitados.length; i++){
-            visitados[i] = false;
-        }
-        
-        for(int i = 0; i < listaNodos.size(); i++){
-            Nodo nodoActual = new Nodo(listaNodos.get(i));
-            Nodo nodoElegido = null;
-            double dMin = Double.MAX_VALUE;
-            for(int j = 0; j < nodoActual.aristas.size(); j++){
-                if(nodoActual.aristas.get(j).etiqueta < dMin && !visitados[j]){
-                    dMin = nodoActual.aristas.get(j).etiqueta;
-                    Punto pAux = new Punto(nodoActual.aristas.get(j).destino); 
-                    for()
+        int puntoInicial = rand.nextInt(n);
+        ruta.add(puntos.get(puntoInicial));
+        visitados[puntoInicial] = true;
+
+        while (ruta.size() < n) {
+            for (int i = 0; i < ruta.size(); i++) {
+                Punto puntoActual = ruta.get(i);
+                double distanciaMinima = Double.MAX_VALUE;
+                int puntoMasCercano = -1;
+                for (int j = 0; j < n; j++) {
+                    if (!visitados[i]) {
+                        Punto puntoDestino = puntos.get(i);
+                        Segmento seg = new Segmento(puntoActual, puntoDestino);
+                        double distancia = seg.distancia();
+                        if (distancia < distanciaMinima) {
+                            distanciaMinima = distancia;
+                            puntoMasCercano = i;
+                        }
+                    }
                 }
+
+                ruta.add(puntos.get(puntoMasCercano));
+                visitados[puntoMasCercano] = true;
             }
         }
+
+        return ruta;
     }
-    */
 }
