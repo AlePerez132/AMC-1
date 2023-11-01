@@ -11,24 +11,45 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Punto> listaPuntos = FicherosTSP.cargarPuntos("dataset8.tsp");
-        ArrayList<Punto> solucion = Voraz.unidireccionalTSP(listaPuntos);
-        FicherosTSP.crearFicheroSolucionTour(solucion, "solucion.tour");
-        //menuParteA();
-    }
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
-    public static void menuParteA() {
         Scanner scanner = new Scanner(System.in);
         int opcion;
 
         do {
-            clearScreen();  // Limpia la pantalla antes de mostrar el menú
             System.out.println("Menú Principal:");
+            System.out.println("1. Entrar al menú de la Parte A:");
+            System.out.println("2. Entrar al menu de la Parte B:");
+            System.out.println("0. Salir");
+            System.out.print("Elige una opción: ");
+
+            opcion = scanner.nextInt();
+            switch (opcion) {
+                case 1:
+                    menuParteA();
+                    break;
+                case 2:
+                    menuParteB();
+                    break;
+                case 0:
+                    System.out.println("Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("Opción no válida. Introduce un valor válido.");
+            }
+            if (opcion != 0) {
+                System.out.println("Presiona Enter para continuar...");
+                scanner.nextLine();  // Limpia el búfer
+            }
+
+        } while (opcion != 0);
+        scanner.close();
+    }
+
+    public static void menuParteA() {
+        Scanner scanner = new Scanner(System.in);
+        int opcion1;
+
+        do {
+            System.out.println("Menú Parte A:");
             System.out.println("1. Crear fichero TSP aleatorio:");
             System.out.println("2. Cargar un .TSP en memoria:");
             System.out.println("3. Comparar todas las estrategias:");
@@ -37,8 +58,8 @@ public class Main {
             System.out.print("Elige una opción: ");
 
             try {
-                opcion = scanner.nextInt();
-                switch (opcion) {
+                opcion1 = scanner.nextInt();
+                switch (opcion1) {
                     case 1: {
                         //Crear fichero TSP aleatorio
                         System.out.println("Opción 1:");
@@ -95,24 +116,66 @@ public class Main {
 
                     case 0:
                         // Opción para salir
-                        System.out.println("Saliendo del programa...");
+                        System.out.println("Saliendo del menú...");
                         break;
                     default:
                         System.out.println("Opción no válida. Introduce un valor válido.");
                 }
-                if (opcion != 0) {
-                    System.out.print("Presiona Enter para continuar...");
-                    scanner.nextLine();  // Limpia el búfer
-                    scanner.nextLine();  // Espera a que el usuario presione Enter
+                if (opcion1 != 0) {
+                    System.out.println("Presiona Enter para continuar...");
+                    //scanner.nextLine();  // Limpia el búfer
+                    //scanner.nextLine();  // Espera a que el usuario presione Enter
                 }
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Error: Ingresa un número válido.");
                 scanner.nextLine();  // Limpia el búfer
-                opcion = -1;
+                opcion1 = -1;
             }
-        } while (opcion != 0);
+        } while (opcion1 != 0);
+    }
 
-        scanner.close();
+    public static void menuParteB() {
+        Scanner scanner = new Scanner(System.in);
+        int opcion2;
+
+        do {
+            System.out.println("Menú Parte B:");
+            System.out.println("1. Ejecutar UnidireccionalTSP:");
+            System.out.println("2. Ejecutar BidireccionalTSP:");
+            System.out.println("0. Salir");
+            System.out.print("Elige una opción: ");
+
+            try {
+                opcion2 = scanner.nextInt();
+                switch (opcion2) {
+                    case 1: {
+                        System.out.println("Opcion 1:");
+                        System.out.println("\t" + "Ruta/Nombre del archivo a comprobar:");
+                        scanner.nextLine();
+                        String nombreArchivo = scanner.nextLine();
+                        ArrayList<Punto> listaPuntos = FicherosTSP.cargarPuntos(nombreArchivo);
+                        ArrayList<Punto> solucion = Voraz.unidireccionalTSP(listaPuntos);
+                        FicherosTSP.crearFicheroSolucionTour(solucion, nombreArchivo + "unidireccional.tour");
+                        break;
+                    }
+                    case 2: {
+                        System.out.println("Opcion 2:");
+                        System.out.println("\t" + "Ruta/Nombre del archivo a comprobar:");
+                        scanner.nextLine();
+                        String nombreArchivo = scanner.nextLine();
+                        ArrayList<Punto> listaPuntos = FicherosTSP.cargarPuntos(nombreArchivo);
+                        ArrayList<Punto> solucion = Voraz.unidireccionalTSP(listaPuntos);
+                        FicherosTSP.crearFicheroSolucionTour(solucion, nombreArchivo + ".bidireccional.tour");
+                        break;
+                    }
+
+                }
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Error: Ingresa un número válido.");
+                scanner.nextLine();  // Limpia el búfer
+                opcion2 = -1;
+            }
+        } while (opcion2 != 0);
     }
 
     public static void menuComparar2() {
@@ -120,7 +183,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int subOpcion1, subOpcion2 = -1;
         do {
-            clearScreen();  // Limpia la pantalla antes de mostrar el menú
             System.out.println("Menú Comparar 2:");
             System.out.println("1. Exhaustivo");
             System.out.println("2. Exhaustivo con Poda");
